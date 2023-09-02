@@ -23,7 +23,7 @@ export async function listMessages(): Promise<ExtendedMessage[]> {
   const messages: ExtendedMessage[] = [];
 
   for await (const entry of kv.list<Message>({ prefix: ["messages"] })) {
-    const [_, timestamp, uuid] = entry.key;
+    const [, timestamp, uuid] = entry.key;
     messages.push({
       ...entry.value,
       timestamp: timestamp as number,
