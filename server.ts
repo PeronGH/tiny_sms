@@ -32,8 +32,8 @@ app.post("/messages", async (ctx) => {
 
 // add new message, compatible with SMS Forwarder on Android
 app.post("/compat/messages", async (ctx) => {
-  const { [ACCESS_KEY]: message } = await ctx.req.parseBody();
-  if (typeof message !== "string") return ctx.text("Incorrect access key", 401);
+  const message = new URLSearchParams(await ctx.req.text()).get(ACCESS_KEY);
+  if (message === null) return ctx.text("Incorrect access key", 401);
 
   const parsed = parseCompatMessage(message);
   if (!parsed) return ctx.text("Invalid message", 400);
